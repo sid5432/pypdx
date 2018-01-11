@@ -35,15 +35,41 @@ class DBconn:
         # hide password; not used anywhere else
         self.dns = re.sub( r"password\s*=\s*'(.*)'", "password='XXXXX'", self.dns)
         
+        self.create_tables()
+        
+        return
+    
+    def create_tables(self):
+        """
+        create tables in database (if they don't already exist)
+        """
         cdir = os.path.dirname( os.path.realpath(__file__) )
         
         # table schemas -------------------------------------
-        schema1 = os.path.join(cdir,"lib","parts.sql")
-        if debug:
-            print(self.hdr,"parts master schema is ",schema1)
-            print(self.hdr,"create partsmaster table")
+        schema = os.path.join(cdir,"lib","partsmaster.sql")
+        if self.debug:
+            print(self.hdr,"parts master schema is ",schema)
         
-        self.populate(schema1)
+        self.populate(schema)
+        
+        schema = os.path.join(cdir,"lib","approvedmfg.sql")
+        if self.debug:
+            print(self.hdr,"approved mfg list schema is ",schema)
+        
+        self.populate(schema)
+        
+        schema = os.path.join(cdir,"lib","attachment.sql")
+        if self.debug:
+            print(self.hdr,"attachment schema is ",schema)
+        
+        self.populate(schema)
+
+        schema = os.path.join(cdir,"lib","bom.sql")
+        if self.debug:
+            print(self.hdr,"bill of materials schema is ",schema)
+        
+        self.populate(schema)
+        
         return
         
     def __enter__(self):
@@ -83,9 +109,12 @@ class DBconn:
         self.conn.commit()
         return
     
-    def clearall(self):
+    def removeall(self):
         c = self.conn.cursor()
-        c.execute("delete * from partsmaster")
+        c.execute("delete from partsmaster")
+        c.execute("delete from bom")
+        c.execute("delete from attachment")
+        c.execute("delete from approvedmfg")
         c.close()
         return
     
@@ -102,7 +131,8 @@ if __name__ == '__main__':
     print("\n")
     print("Test postgres:")
     
-    dns2 = "dbname='coherent' user='dba' host='localhost' port=5432 password='fibrolasero'"
+    # dns2 = "dbname='pdx' user='pdxuser' host='localhost' port=5432 password='billofmaterials'"
+    dns2 = "dbname='pdx' user='pdxuser' host='localhost' port=5432"
     dbconn2 = DBconn(dns2,dbtype='pg',debug=True)
         
     print("MAIN: all done!")
