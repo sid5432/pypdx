@@ -65,7 +65,17 @@ PostgreSQL.  In particular, although the foreign key constraint is observed, the
 "on delete cascade" and "on update cascade" requirements are not enforced (i.e., in
 PostgreSQL, if you remove an Item, all the associated BOM links, attachments, and approved manufacturer
 records will be automatically removed by the database.  This is not the case with
-the SQLite3 database, as of this writing).  
+the SQLite3 database, as of this writing).
+
+For using this in a PostgreSQL database, the example program (<code>pdx-example.py</code>) assumes that there
+is a database called *pdx* running on localhost (at port 5432). You can create the database with the commands:
+
+	% pgsql template1
+	....
+	template1=# create database pdx;
+	template1=# \q
+
+or modify the *dns* specifications in the example program to suit your needs.
 
 It should be relatively simple to modify the
 code to use a [MySQL database](https://www.mysql.com/), but I have not tested it.
