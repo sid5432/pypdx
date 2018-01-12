@@ -39,7 +39,11 @@ if __name__ == '__main__':
         mypdx.dump("pdx-dump.json")
     
     if removeall:
-        doit = input("MAIN: removing *all* records first! Are you sure? (type yes or no)")
+        if sys.version_info[0] < 3:
+            doit = raw_input("MAIN: removing *all* records first! Are you sure? (type yes or no)")
+        else:
+            doit = input("MAIN: removing *all* records first! Are you sure? (type yes or no)")
+        
         if doit == 'yes':
             mypdx.removeall()
         else:
