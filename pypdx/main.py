@@ -3,14 +3,13 @@ from __future__ import absolute_import, print_function, unicode_literals
 import sys
 import os
 
-cdir = os.path.dirname( os.path.realpath(__file__) )
-sys.path.insert(0, cdir+"/..")
+if __name__ == '__main__':
+    cdir = os.path.dirname( os.path.realpath(__file__) )
+    sys.path.insert(0, cdir+"/..")
 
 import pypdx
 
-# ==============================================================
-if __name__ == '__main__':
-    
+def main():
     if len(sys.argv) < 3:
         print("USAGE: %s pdx-file.xml SQLite_file [dump(=1|0)] [remove_all_first(=1|0)]" % sys.argv[0])
         sys.exit()
@@ -51,5 +50,10 @@ if __name__ == '__main__':
     
     mypdx.fillparts()
     print("MAIN: operation completed")
-
+    
+    sys.exit()
+    
+# ==============================================
+if __name__ == '__main__':
+    main()
 

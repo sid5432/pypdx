@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+from __future__ import absolute_import, print_function, unicode_literals
 import os
 import sys
 import re
@@ -46,25 +47,25 @@ class DBconn:
         cdir = os.path.dirname( os.path.realpath(__file__) )
         
         # table schemas -------------------------------------
-        schema = os.path.join(cdir,"lib","partsmaster.sql")
+        schema = os.path.join(cdir,"../lib","partsmaster.sql")
         if self.debug:
             print(self.hdr,"parts master schema is ",schema)
         
         self.populate(schema)
         
-        schema = os.path.join(cdir,"lib","approvedmfg.sql")
+        schema = os.path.join(cdir,"../lib","approvedmfg.sql")
         if self.debug:
             print(self.hdr,"approved mfg list schema is ",schema)
         
         self.populate(schema)
         
-        schema = os.path.join(cdir,"lib","attachment.sql")
+        schema = os.path.join(cdir,"../lib","attachment.sql")
         if self.debug:
             print(self.hdr,"attachment schema is ",schema)
         
         self.populate(schema)
 
-        schema = os.path.join(cdir,"lib","bom.sql")
+        schema = os.path.join(cdir,"../lib","bom.sql")
         if self.debug:
             print(self.hdr,"bill of materials schema is ",schema)
         
@@ -118,21 +119,3 @@ class DBconn:
         c.close()
         return
     
-# -----------------------------------------
-if __name__ == '__main__':
-    
-    # with DBconn(filename) as dbconn:
-    #    dbconn.populate()
-    
-    print("Test SQLite3:")
-    dns = "mypdx.db3"
-    dbconn = DBconn(dns,debug=True)
-    
-    print("\n")
-    print("Test postgres:")
-    
-    # dns2 = "dbname='pdx' user='pdxuser' host='localhost' port=5432 password='billofmaterials'"
-    dns2 = "dbname='pdx' user='pdxuser' host='localhost' port=5432"
-    dbconn2 = DBconn(dns2,dbtype='pg',debug=True)
-        
-    print("MAIN: all done!")

@@ -1,10 +1,32 @@
 clean:
-	rm -f Makefile.bak *~ lib/*~ test/*~ *-dump.json pdx.dump
+	rm -f Makefile.bak *~ */*~ *-dump.json pdx.dump
 
 realclean: clean
-	rm -rf *.db3 *.json *.pyc test/*.pyc test/__pycache__ __pycache__ .cache test/.cache
+	rm -rf *.db3 *.json *.pyc */*.pyc */__pycache__ __pycache__ .cache */.cache
+	rm -rf build dist pypdx.egg-info
+	
+build: realclean
+	python setup.py build
+
+dist: build
+	python setup.py sdist bdist_wheel
+
+upload: dist
+	twine upload dist/*
+
+install: build
+	python setup.py install
+
+test: testall
 
 testall:
 	echo "run tests in test/"
 	pytest
 
+doc:
+	pandoc README.md -o README.rst
+
+html: doc
+	rst2html5.py README.rst > README.html
+		
+		
