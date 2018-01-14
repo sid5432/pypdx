@@ -125,8 +125,8 @@ To use **pypdx** as a module, do something like this:
 
    </blockquote>
 
-The function <code>mypdx.removeall()</code> removes all old records
-from the database tables, and <code>mypdx.fillparts()</code> fills the database table with new records from 
+mypdx.removeall() removes all old records from the database tables,
+mypdx.fillparts() then fills the database table with new records from
 the XML file.
 
 Database and Tables

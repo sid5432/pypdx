@@ -70,10 +70,15 @@ dns = 'testout.sqlite3'
 xmlfile = 'data/pdx.xml'
 mypdx = pypdx.PDX(xmlfile, dns, debug=True)
 
-mypdx.removeall() # remove all old records
-mypdx.fillparts() # fill database table with new records from xmlfile
+mypdx.removeall()
+mypdx.fillparts()
 
 </pre></blockquote>
+
+<code>mypdx.removeall()</code> removes all old records from the
+database tables, <code>mypdx.fillparts()</code> then fills the database table with new records from 
+the XML file.
+
 
 ## Database and Tables
 
