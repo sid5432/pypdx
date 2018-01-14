@@ -1,2 +1,3 @@
 include README.rst
 include lib/*.sql
+include lib/*.xml

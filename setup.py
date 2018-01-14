@@ -76,13 +76,13 @@ setup(
       
       # this doesn't seem to be doing anything
       package_data={
-                    'pypdx': ['lib/*sql'],
-                    'pypdx/lib': ['*sql'],
+                    'pypdx': ['lib/*.sql','lib/*.xml'],
+                    'pypdx/lib': ['*.sql','*.xml'],
                    },
       include_package_data=True,
       
       # need this!
-      data_files=[('lib', ['lib/partsmaster.sql','lib/bom.sql','lib/approvedmfg.sql','lib/attachment.sql','lib/init_pg_db.sql'])],
+      data_files=[('lib', ['lib/partsmaster.sql','lib/bom.sql','lib/approvedmfg.sql','lib/attachment.sql','lib/init_pg_db.sql','lib/pdx-example.xml'])],
       
       # To provide executable scripts, use entry points in preference to the
       # "scripts" keyword. Entry points provide cross-platform support and allow
