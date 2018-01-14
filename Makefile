@@ -34,5 +34,6 @@ html: doc
 		
 tag:
 	git tag `grep version pypdx/__init__.py | cut -d '"' -f 2` -m "Add a tag so we can put this on PyPI"
-	git push --tags origin master
+	# git push --tags origin master
+	git push --tags
 	
