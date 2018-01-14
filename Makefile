@@ -8,7 +8,10 @@ realclean: clean
 build: realclean
 	python setup.py build
 
-dist: build
+check:
+	python setup.py check --strict --restructuredtext
+
+dist: check build
 	python setup.py sdist bdist_wheel
 
 upload: dist

@@ -6,8 +6,7 @@ pypdx
 Introduction
 ------------
 
-From `the Wikipedia article on
-PDX <https://en.wikipedia.org/wiki/PDX_(IPC-257X)>`__: “the PDX (Product
+From `the Wikipedia article on PDX <https://en.wikipedia.org/wiki/PDX_(IPC-257X)>`__: “the PDX (Product
 Data eXchange) standard for manufacturing is a multi-part standard,
 represented by the IPC 2570 series of specifications.”
 
@@ -25,10 +24,9 @@ which forms the bill-of-materials (BOM), and also information about the
 various files that are inside the PDX/ZIP file.
 
 The DTD of this XML file (identified as “DTD 2571 200111”) can be found
-on the `IPC
-website <http://www.ipc.org/4.0_Knowledge/4.1_Standards/IPC-25xx-files/2571.zip>`__.
+on the `IPC website <http://www.ipc.org/4.0_Knowledge/4.1_Standards/IPC-25xx-files/2571.zip>`__.
 Free PDX viewers are available, one of the most popular being PDXViewer
-from `PDXplorer <http://www.pdxplorer.com/>`__.
+from `PDXplorer <http://www.pdxplorer.com/index.html>`__.
 
 Since the \*.pdx file is simply a ZIP file, it is easy to extract all
 the attachments (documents, schematics, drawings, etc.) from the ZIP
@@ -49,7 +47,7 @@ the **ApprovedManufacturerList**, the **BillOfMaterial**, and the
 **Attachments**. The main purpose of the program is to extract this data
 from the XML file, and organize them by saving them into a relational
 database: in this case either a `SQLite3 <https://www.sqlite.org/>`__
-database or a `PostgreSQL <https://www.postgresql.org/>`__ database.
+database or a `PostgreSQL  <https://www.postgresql.org/>`__ database.
 What you do after the data is stuffed into a relational database is up
 to you!
 
@@ -64,13 +62,8 @@ To install the module and program, run
 
 This should create an executable pypdx. The usage is as follows:
 
-.. raw:: html
+::
 
-   <blockquote>
-
-.. raw:: html
-
-   <pre>
    USAGE: pypdx pdx-file.xml dns [dump [remove_all_first]]
         - pdx-file.xml: this is the PDX XML file
         - dns: can be a SQLite3 file (the program will create one if it does not exist; use the extension .sqlite3
@@ -79,11 +72,7 @@ This should create an executable pypdx. The usage is as follows:
         - dump: 1 or 0; to dump to a JSON file pdx-dump.json (optional)
         - remove_all: 1 or 0; remove all records from the tables first (optional);
         -           : WARNING: this will delete *all* existing parts, BOM, etc., records from the database
-   </pre>
 
-.. raw:: html
-
-   </blockquote>
 
 *Examples*: for a SQLite3 database:
 
@@ -102,13 +91,7 @@ distribution. This is obviously not for a real product.
 
 To use **pypdx** as a module, do something like this:
 
-.. raw:: html
-
-   <blockquote>
-
-.. raw:: html
-
-   <pre>
+::
 
    import pypdx
 
@@ -119,11 +102,6 @@ To use **pypdx** as a module, do something like this:
    mypdx.removeall()
    mypdx.fillparts()
 
-   </pre>
-
-.. raw:: html
-
-   </blockquote>
 
 mypdx.removeall() removes all old records from the database tables,
 mypdx.fillparts() then fills the database table with new records from
@@ -171,7 +149,7 @@ you remove an Item, all the associated BOM links, attachments, and
 approved manufacturer records will be automatically removed by the
 database. This is not the case with the SQLite3 database, as of this
 writing). It should be relatively simple to modify the code to use a
-`MySQL database <https://www.mysql.com/>`__, but I have not tried this.
+`MySQL  database <https://www.mysql.com/>`__, but I have not tried this.
 
 The program depends on a few Python modules (specified in the
 requirement.txt file), including the SQLite3 driver (*sqlite3*) and the

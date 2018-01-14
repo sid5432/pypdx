@@ -4,4 +4,4 @@ a relational database (choice of SQLite3 or PostgreSQL).
 """
 from .parser import PDX
 from .main import main
-__version__ = "0.0.1a3"
+__version__ = "0.0.1a6"
