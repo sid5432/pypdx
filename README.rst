@@ -116,14 +116,18 @@ To use **pypdx** as a module, do something like this:
    xmlfile = 'data/pdx.xml'
    mypdx = pypdx.PDX(xmlfile, dns, debug=True)
 
-   mypdx.removeall() # remove all old records
-   mypdx.fillparts() # fill database table with new records from xmlfile
+   mypdx.removeall()
+   mypdx.fillparts()
 
    </pre>
 
 .. raw:: html
 
    </blockquote>
+
+The function <code>mypdx.removeall()</code> removes all old records
+from the database tables, and <code>mypdx.fillparts()</code> fills the database table with new records from 
+the XML file.
 
 Database and Tables
 -------------------
