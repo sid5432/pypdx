@@ -29,4 +29,7 @@ doc:
 html: doc
 	rst2html5.py README.rst > README.html
 		
-		
+tag:
+	git tag `grep version pypdx/__init__.py | cut -d '"' -f 2` -m "Add a tag so we can put this on PyPI"
+	git push --tags origin master
+	
