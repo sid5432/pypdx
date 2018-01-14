@@ -22,7 +22,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
       name='pypdx',
-      version='0.0.1a0',
+      version='0.0.1a1',
       
       description='Extract information from a PDX XML file into a SQLite or PostgreSQL database',
       long_description=long_description,
