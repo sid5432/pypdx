@@ -15,6 +15,7 @@ class DBconn:
         self.dbtype = dbtype
         self.noclose = False
         self.dns = dns
+        self.conn = None
         
         try:
             if dbtype == 'sqlite3':
@@ -93,7 +94,7 @@ class DBconn:
         return
         
     def close(self):
-        if not self.noclose:
+        if not self.noclose and self.conn != None:
             self.conn.close()
         return
     

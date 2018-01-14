@@ -2,6 +2,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 import sys
 import os
+import re
 
 if __name__ == '__main__':
     cdir = os.path.dirname( os.path.realpath(__file__) )
@@ -11,11 +12,18 @@ import pypdx
 
 def main():
     if len(sys.argv) < 3:
-        print("USAGE: %s pdx-file.xml SQLite_file [dump(=1|0)] [remove_all_first(=1|0)]" % sys.argv[0])
+        print("USAGE: %s pdx-file.xml dns [dump [remove_all_first]]" % sys.argv[0])
+        print("     - pdx-file.xml: this is the PDX XML file")
+        print("     - dns: can be a SQLite3 file (the program will create one if it does not exist; use the extension .sqlite3")
+        print("          : or it can be the DNS connection string for a PostgreSQL database")
+        print("          : if dns is 'pg', the default database 'pdx' on localhost (port 5432) and username 'pdxuser' will be used")
+        print("     - dump: 1 or 0; to dump to a JSON file pdx-dump.json (optional)")
+        print("     - remove_all: 1 or 0; remove all records from the tables first (optional);")
+        print("     -           : WARNING: this will delete *all* existing parts, BOM, etc., records from the database")
         sys.exit()
     
     pdxfile = sys.argv[1]
-    dbfile  = sys.argv[2]
+    dns     = sys.argv[2]
     
     if len(sys.argv) >= 4:
         dodump  = True if sys.argv[3]=='1' else False
@@ -28,11 +36,21 @@ def main():
         removeall = False
     
     debug = True
-    if dbfile == 'pg':
-        dns = "dbname='pdx' user='pdxuser' host='localhost' port=5432"
-        mypdx = pypdx.PDX(pdxfile,dns, dbtype='pg',debug=debug)
-    else:
-        mypdx = pypdx.PDX(pdxfile,dbfile,debug=debug)
+    try:
+        if dns == 'pg':
+            dns = "dbname='pdx' user='pdxuser' host='localhost' port=5432"
+            mypdx = pypdx.PDX(pdxfile,dns, dbtype='pg',debug=debug)
+        elif dns[-8:] == '.sqlite3':
+            mypdx = pypdx.PDX(pdxfile,dns,debug=debug)
+        elif re.match('dbname\s*=', dns) != None:
+            mypdx = pypdx.PDX(pdxfile,dns, dbtype='pg',debug=debug)
+        else:
+            print("Unrecognized DNS %s" % dns)
+            sys.exit()
+        
+    except IOError as e:
+        print("Connection Failed ",e)
+        sys.exit(1)
     
     if dodump:
         mypdx.dump("pdx-dump.json")

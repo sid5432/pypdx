@@ -1,6 +1,8 @@
 # pypdx
 *A Simple parser for PDX (Product Data eXchange) XML files*
 
+## Introduction
+
 From [the Wikipedia article on PDX](https://en.wikipedia.org/wiki/PDX_(IPC-257X)):
 "the PDX (Product Data eXchange) standard for manufacturing is a multi-part standard,
 represented by the IPC 2570 series of specifications."
@@ -23,9 +25,59 @@ a generic XML viewer is not really feasible, and although there are specialized 
 viewers, there are times when you might want to extract the data for your
 own use. To this end I have written a simple PDX XML file parser, pypdx (written in Python), as presented here.
 
-The *pypdx* program can be used as a Python module, but includes a sample program that is more or less ready to use. Be warned that it does. It does *not* implement all the elements defined in the PDX standard, but only the parts that happen to be of interest to *me* at the moment, so don't be surprised if it does not have the features you are looking for. What it does extract are the **Item**s, the **ApprovedManufacturerList**, the **BillOfMaterial**, and the **Attachments**. The main purpose of the program is to extract this data from the XML file, and organize them by saving them into a relational database: in this case either a [SQLite3](https://www.sqlite.org/) database 
+The *pypdx* program can be used as a Python module, but 
+also as a command-line stand-alone program that is more or less ready to use. Be warned that it does. It does *not* implement all the elements defined in the PDX standard, but only the parts that happen to be of interest to *me* at the moment, so don't be surprised if it does not have the features you are looking for. What it does extract are the **Item**s, the **ApprovedManufacturerList**, the **BillOfMaterial**, and the **Attachments**. The main purpose of the program is to extract this data from the XML file, and organize them by saving them into a relational database: in this case either a [SQLite3](https://www.sqlite.org/) database 
 or a [PostgreSQL](https://www.postgresql.org/) database. What you do after the data is 
-stuffed into a relational database is up to you! The data is saved into the following tables:
+stuffed into a relational database is up to you! 
+
+## Installation and Usage
+
+To install the module and program, run
+
+	pip install pypdx
+    
+This should create an executable <code>pypdx</code>.  The usage is as follows:
+
+<blockquote><pre>
+USAGE: pypdx pdx-file.xml dns [dump [remove_all_first]]
+     - pdx-file.xml: this is the PDX XML file
+     - dns: can be a SQLite3 file (the program will create one if it does not exist; use the extension .sqlite3
+          : or it can be the DNS connection string for a PostgreSQL database
+          : if dns is 'pg', the default database 'pdx' on localhost (port 5432) and username 'pdxuser' will be used
+     - dump: 1 or 0; to dump to a JSON file pdx-dump.json (optional)
+     - remove_all: 1 or 0; remove all records from the tables first (optional);
+     -           : WARNING: this will delete *all* existing parts, BOM, etc., records from the database
+</pre></blockquote>
+
+*Examples*: for a SQLite3 database:
+
+ 	pypdx lib/pdx-example.xml testout.sqlite3 1 1
+	
+for a postgreSQL database:
+
+	pypdx lib/pdx-example.xml "dbname='pdx' host='localhost' user='pdxuser' password='billofmaterials' port=5432" 1 1
+
+A sample PDX XML file (<code>lib/pdx-example.xml</code>) is included in the distribution.  This is
+obviously not for a real product.
+
+To use **pypdx** as a module, do something like this:
+
+<blockquote><pre>
+
+import pypdx
+
+dns = 'testout.sqlite3'
+xmlfile = 'data/pdx.xml'
+mypdx = pypdx.PDX(xmlfile, dns, debug=True)
+
+mypdx.removeall() # remove all old records
+mypdx.fillparts() # fill database table with new records from xmlfile
+
+</pre></blockquote>
+
+## Database and Tables
+
+The data is saved into the following tables:
 
 - **partsmaster** is the main table that stores the Items; each Item is uniquely identified by a
 **itemUniqueIdentifier**
@@ -56,16 +108,7 @@ PostgreSQL.  In particular, although the foreign key constraint is observed, the
 "*on delete cascade*" and "*on update cascade*" requirements are not enforced (i.e., in
 PostgreSQL, if you remove an Item, all the associated BOM links, attachments, and approved manufacturer
 records will be automatically removed by the database.  This is not the case with
-the SQLite3 database, as of this writing).
-
-For using this in a PostgreSQL database, the example program (<code>pdx-example.py</code>) will create the tables for you if they do not already exist, but it assumes that the database called *pdx* already exists, and is running on localhost (at port 5432). You can create the database with the commands:
-
-	% psql template1
-	....
-	template1=# create database pdx;
-	template1=# \q
-
-or modify the *dns* specifications in the example program to suit your needs. It should be relatively simple to modify the
+the SQLite3 database, as of this writing). It should be relatively simple to modify the
 code to use a [MySQL database](https://www.mysql.com/), but I have not tried this.
 
 The program depends on a few Python modules (specified in the <code>requirement.txt</code>
@@ -77,6 +120,8 @@ to install the modules.  If you do not care for the PostgreSQL database, you sho
 able to use the program without installing the *psycopg2* module, since it is not imported
 unless you specify the PostgreSQL database option.
 
+## Closing Remarks
+
 I have only seen a very small number of PDX files, and there does not seem to be
 any sample PDX files that you can download from the Internet (likely because the only
 PDX files available contain proprietary manufacturing information!). 
@@ -84,7 +129,7 @@ Naturally the testing of this program has been very limited. While I believe
 the implementation to be correct (if incomplete), there is always the possibility of bugs. 
 So use at your own risk; you have been warned!
 
-(*Last Revised 2018-01-11*)
+(*Last Revised 2018-01-14*)
 
 
 
