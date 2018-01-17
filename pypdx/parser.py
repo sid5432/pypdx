@@ -4,7 +4,6 @@ import sys
 import os
 import xmltodict
 import json
-import psycopg2
 
 from . import dbconn
 
@@ -61,7 +60,8 @@ class PDX:
         bomtree = self.bomtree = xmltodict.parse(xmldata)
         if not 'ProductDataeXchangePackage' in bomtree:
             print(self.hdr,"!!!! ERROR: XML file does not have ProductDataeXchangePackage")
-            sys.exit()
+            self.db = None
+            return
         
         self.bomroot = bomtree['ProductDataeXchangePackage']
         
@@ -155,12 +155,20 @@ class PDX:
                 vlist.append( val )
             
             # print(self.hdr," values: ",vlist)
+            err = False
             try:
                 cur.execute(sqltemp, tuple(vlist))
-            except psycopg2.Error as e:
-                print(e.pgerror)
-                print(e.diag.message_detail)
-                sys.exit()
+            except self.db.dbmodule.Error as e:
+                err = True
+                errmsg = e
+            
+            if err:
+                if self.dbtype == 'sqlite3':
+                    print("ERROR: ",errmsg)
+                else:
+                    print(errmsg.pgerror)
+                    print(errmsg.diag.message_detail)
+                return 'nok'
             
             # .......... look for BOM ..............
             if 'BillOfMaterial' in item.keys():
@@ -189,13 +197,21 @@ class PDX:
             sqltemp = "insert into bom (itemUniqueIdentifier,"+(",".join(bomfields))+") values (%s,"+(",".join( ['%s' for x in bomfields] ) )+")"
         
         for record in self.bomsqllist:
+            err = False
             try:
                 cur.execute(sqltemp, record)
-            except psycopg2.Error as e:
-                print(e.pgerror)
-                print(e.diag.message_detail)
-                sys.exit()
-                
+            except self.db.dbmodule.Error as e:
+                err = True
+                errmsg = e
+            
+            if err:
+                if self.dbtype == 'sqlite3':
+                    print("ERROR: ",errmsg)
+                else:
+                    print(errmsg.pgerror)
+                    print(errmsg.diag.message_detail)
+                return 'nok'
+        
         cur.close()
         self.db.commit()
         
@@ -208,12 +224,20 @@ class PDX:
             sqltemp = "insert into attachment (itemUniqueIdentifier,"+(",".join(attfields))+") values (%s,"+(",".join( ['%s' for x in attfields] ) )+")"
         
         for record in self.attsqllist:
+            err = False
             try:
                 cur.execute(sqltemp, record)
-            except psycopg2.Error as e:
-                print(e.pgerror)
-                print(e.diag.message_detail)
-                sys.exit()
+            except self.db.dbmodule.Error as e:
+                err = True
+                errmsg = e
+            
+            if err:
+                if self.dbtype == 'sqlite3':
+                    print("ERROR: ",errmsg)
+                else:
+                    print(errmsg.pgerror)
+                    print(errmsg.diag.message_detail)
+                return 'nok'
         
         cur.close()
         self.db.commit()
@@ -227,12 +251,20 @@ class PDX:
             sqltemp = "insert into approvedmfg (itemUniqueIdentifier,"+(",".join(apmfields))+") values (%s,"+(",".join( ['%s' for x in apmfields] ) )+")"
         
         for record in self.apmsqllist:
+            err = False
             try:
                 cur.execute(sqltemp, record)
-            except psycopg2.Error as e:
-                print(e.pgerror)
-                print(e.diag.message_detail)
-                sys.exit()
+            except self.db.dbmodule.Error as e:
+                err = True
+                errmsg = e
+            
+            if err:
+                if self.dbtype == 'sqlite3':
+                    print("ERROR: ",errmsg)
+                else:
+                    print(errmsg.pgerror)
+                    print(errmsg.diag.message_detail)
+                return 'nok'
         
         cur.close()
         self.db.commit()
@@ -244,7 +276,7 @@ class PDX:
             print(self.hdr,"Total %d Attachment items" % len(self.attsqllist) )
             print(self.hdr,"Total %d Approved MFG items" % len(self.apmsqllist) )
         
-        return
+        return 'ok'
     
     # =========================================================================================
     def process_bom(self, item):

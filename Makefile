@@ -2,7 +2,7 @@ clean:
 	rm -f Makefile.bak *~ */*~ *-dump.json pdx.dump
 
 realclean: clean
-	rm -rf *.db3 *.json *.pyc */*.pyc */__pycache__ __pycache__ .cache */.cache
+	rm -rf *.sqlite3 *.json *.pyc */*.pyc */__pycache__ __pycache__ .cache */.cache
 	rm -rf build dist pypdx.egg-info
 	
 build: realclean

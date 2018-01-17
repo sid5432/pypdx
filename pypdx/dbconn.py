@@ -19,12 +19,12 @@ class DBconn:
         
         try:
             if dbtype == 'sqlite3':
-                import sqlite3
-                self.conn = sqlite3.connect(dns)
+                import sqlite3 as dbmodule
+                self.conn = dbmodule.connect(dns)
             elif dbtype == 'pg':
-                import psycopg2
+                import psycopg2 as dbmodule
                 import psycopg2.extras
-                self.conn = psycopg2.connect(dns, cursor_factory=psycopg2.extras.DictCursor)
+                self.conn = dbmodule.connect(dns, cursor_factory=psycopg2.extras.DictCursor)
             else:
                 print("Unrecognized DB type %s" % dbtype);
                 self.noclose = True
@@ -32,7 +32,8 @@ class DBconn:
         except:
             print("Cannot connect to database");
             sys.exit()
-
+        
+        self.dbmodule = dbmodule
         self.debug = debug
         # hide password; not used anywhere else
         self.dns = re.sub( r"password\s*=\s*'(.*)'", "password='XXXXX'", self.dns)

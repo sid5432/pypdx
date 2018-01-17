@@ -66,10 +66,14 @@ def main():
         else:
             print("MAIN: not removing old records")
     
-    mypdx.fillparts()
-    print("MAIN: operation completed")
+    status = mypdx.fillparts()
+    if status == 'ok':
+        print("MAIN: operation completed")
+    else:
+        print("MAIN: fillparts() failed")
+        sys.exit(1)
     
-    sys.exit()
+    sys.exit(0)
     
 # ==============================================
 if __name__ == '__main__':
