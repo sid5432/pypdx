@@ -51,13 +51,13 @@ USAGE: pypdx pdx-file.xml dns [dump [remove_all_first]]
 
 *Examples*: for a SQLite3 database:
 
- 	pypdx lib/pdx-example.xml testout.sqlite3 1 1
+ 	pypdx data/pdx-example.xml testout.sqlite3 1 1
 	
 for a postgreSQL database:
 
-	pypdx lib/pdx-example.xml "dbname='pdx' host='localhost' user='pdxuser' password='billofmaterials' port=5432" 1 1
+	pypdx data/pdx-example.xml "dbname='pdx' host='localhost' user='pdxuser' password='billofmaterials' port=5432" 1 1
 
-A sample PDX XML file (<code>lib/pdx-example.xml</code>) is included in the distribution.  This is
+A sample PDX XML file (<code>data/pdx-example.xml</code>) is included in the distribution.  This is
 obviously not for a real product.
 
 To use **pypdx** as a module, do something like this:
@@ -99,8 +99,10 @@ for each Item. There can also be mutiple approved manufacturers for each Item.
 
 
 The definition of (and relations between) these tables are laid out in the SQL files
-in the <code>lib/</code> directory.  A sample program (<code>pdx-example.py</code>) illustrates
-the usage of the module. You can also dump the contents of the PDX file into a JSON file
+in the <code>data/</code> directory.  A sample program (<code>main.py</code>) in the source code distribution
+illustrates
+the usage of the module (this is used to form the **pypdx** program
+mentioned above). You can also dump the contents of the PDX file into a JSON file
 (with the <code>PDX.dump(filename)</code> function).  However this merely mirrors the
 structure and contents of the XML file; it may not be particularly useful unless you
 process the JSON file/object further on your own.
@@ -113,7 +115,18 @@ PostgreSQL.  In particular, although the foreign key constraint is observed, the
 "*on delete cascade*" and "*on update cascade*" requirements are not enforced (i.e., in
 PostgreSQL, if you remove an Item, all the associated BOM links, attachments, and approved manufacturer
 records will be automatically removed by the database.  This is not the case with
-the SQLite3 database, as of this writing). It should be relatively simple to modify the
+the SQLite3 database, as of this writing). 
+
+For using this in a PostgreSQL database, the program pypdx will create the tables for you 
+if they do not already exist, but it assumes that the database called pdx already exists 
+and is running on localhost (at port 5432). You can create the database with the commands:
+
+	% psql template1
+ 	....
+ 	template1=# create database pdx;
+ 	template1=# \q
+    
+or you can modify the dns specifications in the example program to suit your needs. It should be relatively simple to modify the
 code to use a [MySQL database](https://www.mysql.com/), but I have not tried this.
 
 The program depends on a few Python modules (specified in the <code>requirement.txt</code>
@@ -134,7 +147,7 @@ Naturally the testing of this program has been very limited. While I believe
 the implementation to be correct (if incomplete), there is always the possibility of bugs. 
 So use at your own risk; you have been warned!
 
-(*Last Revised 2018-01-14*)
+(*Last Revised 2018-01-18*)
 
 
 

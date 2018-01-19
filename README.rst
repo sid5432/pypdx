@@ -78,15 +78,15 @@ This should create an executable pypdx. The usage is as follows:
 
 ::
 
-    pypdx lib/pdx-example.xml testout.sqlite3 1 1
+    pypdx data/pdx-example.xml testout.sqlite3 1 1
 
 for a postgreSQL database:
 
 ::
 
-    pypdx lib/pdx-example.xml "dbname='pdx' host='localhost' user='pdxuser' password='billofmaterials' port=5432" 1 1
+    pypdx data/pdx-example.xml "dbname='pdx' host='localhost' user='pdxuser' password='billofmaterials' port=5432" 1 1
 
-A sample PDX XML file (lib/pdx-example.xml) is included in the
+A sample PDX XML file (data/pdx-example.xml) is included in the
 distribution. This is obviously not for a real product.
 
 To use **pypdx** as a module, do something like this:
@@ -130,8 +130,9 @@ The data is saved into the following tables:
    approved manufacturers for each Item.
 
 The definition of (and relations between) these tables are laid out in
-the SQL files in the lib/ directory. A sample program (pdx-example.py)
-illustrates the usage of the module. You can also dump the contents of
+the SQL files in the data/ directory. A sample program (*main.py*) in the source 
+code distribution illustrates the usage of the module (this is used to
+form the **pypdx** program mentioned above). You can also dump the contents of
 the PDX file into a JSON file (with the PDX.dump(filename) function).
 However this merely mirrors the structure and contents of the XML file;
 it may not be particularly useful unless you process the JSON
@@ -148,12 +149,28 @@ update cascade*” requirements are not enforced (i.e., in PostgreSQL, if
 you remove an Item, all the associated BOM links, attachments, and
 approved manufacturer records will be automatically removed by the
 database. This is not the case with the SQLite3 database, as of this
-writing). It should be relatively simple to modify the code to use a
-`MySQL  database <https://www.mysql.com/>`__, but I have not tried this.
+writing).
+
+For using this in a PostgreSQL database, the program **pypdx** will
+create the tables for you if they do not already exist, but it assumes
+that the database called *pdx* already exists and is running on
+localhost (at port 5432). You can create the database with the
+commands
+
+::
+    % psql template1
+    ....
+    template1=# create database pdx;
+    template1=# \q
+
+or you can modify the <i>dns</i> specifications in the example program
+to suit your needs. It should be relatively simple to modify the code
+to use a `MySQL database <https://www.mysql.com/>`__, but I have not
+tried this.
 
 The program depends on a few Python modules (specified in the
-requirement.txt file), including the SQLite3 driver (*sqlite3*) and the
-PostgreSQL driver (*psycopg2*). Run
+requirement.txt file), including the SQLite3 driver (*sqlite3*) and
+the PostgreSQL driver (*psycopg2*). Run
 
 ::
 
@@ -175,4 +192,4 @@ been very limited. While I believe the implementation to be correct (if
 incomplete), there is always the possibility of bugs. So use at your own
 risk; you have been warned!
 
-(*Last Revised 2018-01-14*)
+(*Last Revised 2018-01-18*)
