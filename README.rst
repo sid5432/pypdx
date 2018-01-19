@@ -158,6 +158,7 @@ localhost (at port 5432). You can create the database with the
 commands
 
 ::
+
     % psql template1
     ....
     template1=# create database pdx;
