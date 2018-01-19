@@ -11,7 +11,7 @@ import pypdx
 def test_module():
     
     dns = ':memory:'
-    xmlfile = os.path.join(cdir,"../lib/pdx-example.xml")
+    xmlfile = os.path.join(cdir,"../pypdx/data/pdx-example.xml")
     
     mypdx = pypdx.PDX(xmlfile, dns, debug=True)
     mypdx.removeall()

@@ -22,7 +22,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
       name='pypdx',
-      version='0.0.1a7',
+      version='0.0.1a8',
       
       description='Extract information from a PDX XML file into a SQLite or PostgreSQL database',
       long_description=long_description,
@@ -76,13 +76,17 @@ setup(
       
       # this doesn't seem to be doing anything
       package_data={
-                    'pypdx': ['lib/*.sql','lib/*.xml'],
-                    'pypdx/lib': ['*.sql','*.xml'],
+                    'pypdx': ['data/*.sql','data/*.xml'],
                    },
       include_package_data=True,
       
-      # need this!
-      data_files=[('lib', ['lib/partsmaster.sql','lib/bom.sql','lib/approvedmfg.sql','lib/attachment.sql','lib/init_pg_db.sql','lib/pdx-example.xml'])],
+      # data_files=[('data', ['pypdx/data/partsmaster.sql',
+      #                      'pypdx/data/bom.sql',
+      #                      'pypdx/data/approvedmfg.sql',
+      #                      'pypdx/data/attachment.sql',
+      #                      'pypdx/data/init_pg_db.sql',
+      #                      'pypdx/data/pdx-example.xml',
+      #                     ])],
       
       # To provide executable scripts, use entry points in preference to the
       # "scripts" keyword. Entry points provide cross-platform support and allow
