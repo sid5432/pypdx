@@ -156,7 +156,7 @@ commands
     template1=# create database pdx;
     template1=# \q
 
-or you can modify the <i>dsn</i> specifications in the example program
+or you can modify the *dsn* specifications in the example program
 to suit your needs. It should be relatively simple to modify the code
 to use a `MySQL database <https://www.mysql.com/>`__, but I have not
 tried this.

@@ -165,10 +165,12 @@ class PDX:
             if err:
                 if self.dbtype == 'sqlite3':
                     print("ERROR: ",errmsg)
+                    msg = errmsg
                 else:
                     print(errmsg.pgerror)
                     print(errmsg.diag.message_detail)
-                return 'nok'
+                    msg = errmsg.pgerror + "; " + errmsg.diag.message_detail
+                return msg
             
             # .......... look for BOM ..............
             if 'BillOfMaterial' in item.keys():
@@ -207,10 +209,12 @@ class PDX:
             if err:
                 if self.dbtype == 'sqlite3':
                     print("ERROR: ",errmsg)
+                    msg = errmsg
                 else:
                     print(errmsg.pgerror)
                     print(errmsg.diag.message_detail)
-                return 'nok'
+                    msg = errmsg.pgerror + "; " + errmsg.diag.message_detail
+                return msg
         
         cur.close()
         self.db.commit()
@@ -234,10 +238,13 @@ class PDX:
             if err:
                 if self.dbtype == 'sqlite3':
                     print("ERROR: ",errmsg)
+                    msg = errmsg
                 else:
                     print(errmsg.pgerror)
                     print(errmsg.diag.message_detail)
-                return 'nok'
+                    msg = errmsg.pgerror + "; " + errmsg.diag.message_detail
+                return msg
+        
         
         cur.close()
         self.db.commit()
@@ -261,10 +268,12 @@ class PDX:
             if err:
                 if self.dbtype == 'sqlite3':
                     print("ERROR: ",errmsg)
+                    msg = errmsg
                 else:
                     print(errmsg.pgerror)
                     print(errmsg.diag.message_detail)
-                return 'nok'
+                    msg = errmsg.pgerror + "; " + errmsg.diag.message_detail
+                return msg
         
         cur.close()
         self.db.commit()
