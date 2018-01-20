@@ -21,6 +21,7 @@ class DBconn:
             if dbtype == 'sqlite3':
                 import sqlite3 as dbmodule
                 self.conn = dbmodule.connect(dns)
+                self.conn.row_factory = dbmodule.Row
             elif dbtype == 'pg':
                 import psycopg2 as dbmodule
                 import psycopg2.extras

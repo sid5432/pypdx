@@ -2,6 +2,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 import sys
 import os
+import sqlite3
 cdir = os.path.dirname( os.path.realpath(__file__) )
 
 sys.path.insert(0, cdir+"/..")
@@ -30,11 +31,11 @@ def test_module():
     assert(bomcount == 108)
 
     cur = mypdx.db.conn.cursor()
-    cur.execute("select count(*) from partsmaster")
+    cur.execute("select count(*) as rcount from partsmaster")
     
     itemcount = 0
     for row in cur:
-        itemcount = row[0]
+        itemcount = row['rcount']
         
     cur.close()
     assert(itemcount == 100)
