@@ -11,15 +11,15 @@ from pypdx import dbconn
 def test_dbconn():
     
     print("Test SQLite3:")
-    dns = ':memory:'
-    db = dbconn.DBconn(dns,debug=True)
+    dsn = ':memory:'
+    db = dbconn.DBconn(dsn,debug=True)
     assert( db != None )
     
     print("\n")
     print("Test postgres:")
     
-    dns2 = "dbname='pdx' user='pdxuser' host='localhost' port=5432"
-    db2 = dbconn.DBconn(dns2,dbtype='pg',debug=True)
+    dsn2 = "dbname='pdx' user='pdxuser' host='localhost' port=5432"
+    db2 = dbconn.DBconn(dsn2,dbtype='pg',debug=True)
     assert( db2 != None )
     
     print("MAIN: all done!")

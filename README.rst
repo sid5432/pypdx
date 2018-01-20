@@ -64,11 +64,11 @@ This should create an executable pypdx. The usage is as follows:
 
 ::
 
-   USAGE: pypdx pdx-file.xml dns [dump [remove_all_first]]
+   USAGE: pypdx pdx-file.xml dsn [dump [remove_all_first]]
         - pdx-file.xml: this is the PDX XML file
-        - dns: can be a SQLite3 file (the program will create one if it does not exist; use the extension .sqlite3
-             : or it can be the DNS connection string for a PostgreSQL database
-             : if dns is 'pg', the default database 'pdx' on localhost (port 5432) and username 'pdxuser' will be used
+        - dsn: can be a SQLite3 file (the program will create one if it does not exist; use the extension .sqlite3
+             : or it can be the dsn connection string for a PostgreSQL database
+             : if dsn is 'pg', the default database 'pdx' on localhost (port 5432) and username 'pdxuser' will be used
         - dump: 1 or 0; to dump to a JSON file pdx-dump.json (optional)
         - remove_all: 1 or 0; remove all records from the tables first (optional);
         -           : WARNING: this will delete *all* existing parts, BOM, etc., records from the database
@@ -95,9 +95,9 @@ To use **pypdx** as a module, do something like this:
 
    import pypdx
 
-   dns = 'testout.sqlite3'
+   dsn = 'testout.sqlite3'
    xmlfile = 'data/pdx.xml'
-   mypdx = pypdx.PDX(xmlfile, dns, debug=True)
+   mypdx = pypdx.PDX(xmlfile, dsn, debug=True)
 
    mypdx.removeall()
    mypdx.fillparts()
@@ -141,15 +141,7 @@ file/object further on your own.
 As mentioned above, the program allows you to extract the data into a
 SQLite3 database or a PostgreSQL database. The former is less trouble to
 set up, as it is file-based. The program will in fact create the SQLite3
-database file for you (as well as create the tables). However the
-SQLite3 database does not have all the features of a full-blown
-relational database such as PostgreSQL. In particular, although the
-foreign key constraint is observed, the “*on delete cascade*” and “*on
-update cascade*” requirements are not enforced (i.e., in PostgreSQL, if
-you remove an Item, all the associated BOM links, attachments, and
-approved manufacturer records will be automatically removed by the
-database. This is not the case with the SQLite3 database, as of this
-writing).
+database file for you (as well as create the tables).
 
 For using this in a PostgreSQL database, the program **pypdx** will
 create the tables for you if they do not already exist, but it assumes
@@ -164,7 +156,7 @@ commands
     template1=# create database pdx;
     template1=# \q
 
-or you can modify the <i>dns</i> specifications in the example program
+or you can modify the <i>dsn</i> specifications in the example program
 to suit your needs. It should be relatively simple to modify the code
 to use a `MySQL database <https://www.mysql.com/>`__, but I have not
 tried this.
@@ -193,4 +185,4 @@ been very limited. While I believe the implementation to be correct (if
 incomplete), there is always the possibility of bugs. So use at your own
 risk; you have been warned!
 
-(*Last Revised 2018-01-18*)
+(*Last Revised 2018-01-19*)

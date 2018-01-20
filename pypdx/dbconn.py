@@ -6,7 +6,7 @@ import re
 
 class DBconn:
     
-    def __init__(self,dns,dbtype='sqlite3',debug=False):
+    def __init__(self,dsn,dbtype='sqlite3',debug=False):
         """
         accepted options for dbtype: sqlite3 and pg (for postgres)
         """
@@ -14,18 +14,18 @@ class DBconn:
         self.debug = debug
         self.dbtype = dbtype
         self.noclose = False
-        self.dns = dns
+        self.dsn = dsn
         self.conn = None
         
         try:
             if dbtype == 'sqlite3':
                 import sqlite3 as dbmodule
-                self.conn = dbmodule.connect(dns)
+                self.conn = dbmodule.connect(dsn)
                 self.conn.row_factory = dbmodule.Row
             elif dbtype == 'pg':
                 import psycopg2 as dbmodule
                 import psycopg2.extras
-                self.conn = dbmodule.connect(dns, cursor_factory=psycopg2.extras.DictCursor)
+                self.conn = dbmodule.connect(dsn, cursor_factory=psycopg2.extras.DictCursor)
             else:
                 print("Unrecognized DB type %s" % dbtype);
                 self.noclose = True
@@ -37,8 +37,17 @@ class DBconn:
         self.dbmodule = dbmodule
         self.debug = debug
         # hide password; not used anywhere else
-        self.dns = re.sub( r"password\s*=\s*'(.*)'", "password='XXXXX'", self.dns)
+        self.dsn = re.sub( r"password\s*=\s*'(.*)'", "password='XXXXX'", self.dsn)
         
+        # need to turn on foreign key explicitly for sqlite3!
+        if dbtype == 'sqlite3':
+            try:
+                cur = self.conn.cursor()
+                cur.execute("pragma foreign_keys = ON")
+                cur.close()
+            except self.dbmodule.Error as e:
+                print("! Failed to turn on foreign key support!")
+                
         self.create_tables()
         
         return
@@ -78,18 +87,21 @@ class DBconn:
         
     def __enter__(self):
         return self
-    
+
+    """
+    # remove this for now; too much trouble reconciling this with flask
     def __del__(self):
         if self.debug:
-            print(self.hdr,"closing database connection %s (auto2)" % self.dns)
-        self.close()
+            print(self.hdr,"closing database connection %s (auto2)" % self.dsn)
+            self.close()
         return
     
     def __exit__(self,exc_type,exc_value,traceback):
         if self.debug:
-            print(self.hdr,"closing database connection %s (auto1)" % self.dns)
-        self.close()
+            print(self.hdr,"closing database connection %s (auto1)" % self.dsn)
+            self.close()
         return
+    """
     
     def commit(self):
         self.conn.commit()

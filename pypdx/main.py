@@ -12,18 +12,18 @@ import pypdx
 
 def main():
     if len(sys.argv) < 3:
-        print("USAGE: %s pdx-file.xml dns [dump [remove_all_first]]" % sys.argv[0])
+        print("USAGE: %s pdx-file.xml dsn [dump [remove_all_first]]" % sys.argv[0])
         print("     - pdx-file.xml: this is the PDX XML file")
-        print("     - dns: can be a SQLite3 file (the program will create one if it does not exist; use the extension .sqlite3")
-        print("          : or it can be the DNS connection string for a PostgreSQL database")
-        print("          : if dns is 'pg', the default database 'pdx' on localhost (port 5432) and username 'pdxuser' will be used")
+        print("     - dsn: can be a SQLite3 file (the program will create one if it does not exist; use the extension .sqlite3")
+        print("          : or it can be the dsn connection string for a PostgreSQL database")
+        print("          : if dsn is 'pg', the default database 'pdx' on localhost (port 5432) and username 'pdxuser' will be used")
         print("     - dump: 1 or 0; to dump to a JSON file pdx-dump.json (optional)")
         print("     - remove_all: 1 or 0; remove all records from the tables first (optional);")
         print("     -           : WARNING: this will delete *all* existing parts, BOM, etc., records from the database")
         sys.exit()
     
     pdxfile = sys.argv[1]
-    dns     = sys.argv[2]
+    dsn     = sys.argv[2]
     
     if len(sys.argv) >= 4:
         dodump  = True if sys.argv[3]=='1' else False
@@ -37,15 +37,15 @@ def main():
     
     debug = True
     try:
-        if dns == 'pg':
-            dns = "dbname='pdx' user='pdxuser' host='localhost' port=5432"
-            mypdx = pypdx.PDX(pdxfile,dns, dbtype='pg',debug=debug)
-        elif dns[-8:] == '.sqlite3':
-            mypdx = pypdx.PDX(pdxfile,dns,debug=debug)
-        elif re.match('dbname\s*=', dns) != None:
-            mypdx = pypdx.PDX(pdxfile,dns, dbtype='pg',debug=debug)
+        if dsn == 'pg':
+            dsn = "dbname='pdx' user='pdxuser' host='localhost' port=5432"
+            mypdx = pypdx.PDX(pdxfile,dsn, dbtype='pg',debug=debug)
+        elif dsn[-8:] == '.sqlite3':
+            mypdx = pypdx.PDX(pdxfile,dsn,debug=debug)
+        elif re.match('dbname\s*=', dsn) != None:
+            mypdx = pypdx.PDX(pdxfile,dsn, dbtype='pg',debug=debug)
         else:
-            print("Unrecognized DNS %s" % dns)
+            print("Unrecognized dsn %s" % dsn)
             sys.exit()
         
     except IOError as e:

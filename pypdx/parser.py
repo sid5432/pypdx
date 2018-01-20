@@ -48,10 +48,10 @@ apmfields = [
 
 # ===================================================================================
 class PDX:
-    def __init__(self,pdxfile, dns, dbtype='sqlite3', debug=False):
+    def __init__(self,pdxfile, dsn, dbtype='sqlite3', debug=False):
         self.hdr = "PDX: "
         self.debug = debug
-        self.dns   = dns
+        self.dsn   = dsn
         
         # read into string then dump into object
         with open(pdxfile,'r') as myfile:
@@ -67,7 +67,7 @@ class PDX:
         
         # database connection
         self.dbtype = dbtype
-        self.db = dbconn.DBconn(dns, dbtype=dbtype, debug=debug)
+        self.db = dbconn.DBconn(dsn, dbtype=dbtype, debug=debug)
         
         return
     
