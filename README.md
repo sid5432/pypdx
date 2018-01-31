@@ -70,7 +70,7 @@ dsn = 'testout.sqlite3'
 xmlfile = 'data/pdx.xml'
 mypdx = pypdx.PDX(xmlfile, dsn, debug=True)
 
-# should return 'ok', otherwise you get the error message
+\# should return 'ok', otherwise you get the error message
 status = mypdx.removeall()
 status = mypdx.fillparts()
 
