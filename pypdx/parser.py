@@ -87,9 +87,9 @@ class PDX:
     
     # ---------------------------------------------------------------------------------------
     def removeall(self):
-        self.db.removeall()
+        status = self.db.removeall()
         
-        return
+        return status
     
     # ---------------------------------------------------------------------------------------
     def fillparts(self):
@@ -170,6 +170,9 @@ class PDX:
                     print(errmsg.pgerror)
                     print(errmsg.diag.message_detail)
                     msg = errmsg.pgerror + "; " + errmsg.diag.message_detail
+                
+                cur.close()
+                self.db.conn.rollback()
                 return msg
             
             # .......... look for BOM ..............
@@ -214,6 +217,9 @@ class PDX:
                     print(errmsg.pgerror)
                     print(errmsg.diag.message_detail)
                     msg = errmsg.pgerror + "; " + errmsg.diag.message_detail
+                
+                cur.close()
+                self.db.conn.rollback()
                 return msg
         
         cur.close()
@@ -243,6 +249,9 @@ class PDX:
                     print(errmsg.pgerror)
                     print(errmsg.diag.message_detail)
                     msg = errmsg.pgerror + "; " + errmsg.diag.message_detail
+                
+                cur.close()
+                self.db.conn.rollback()
                 return msg
         
         
@@ -273,6 +282,9 @@ class PDX:
                     print(errmsg.pgerror)
                     print(errmsg.diag.message_detail)
                     msg = errmsg.pgerror + "; " + errmsg.diag.message_detail
+                
+                cur.close()
+                self.db.conn.rollback()
                 return msg
         
         cur.close()

@@ -98,9 +98,10 @@ To use **pypdx** as a module, do something like this:
    dsn = 'testout.sqlite3'
    xmlfile = 'data/pdx.xml'
    mypdx = pypdx.PDX(xmlfile, dsn, debug=True)
-
-   mypdx.removeall()
-   mypdx.fillparts()
+   
+   # should return 'ok', otherwise you get the error message
+   status = mypdx.removeall()
+   status = mypdx.fillparts()
 
 
 mypdx.removeall() removes all old records from the database tables,

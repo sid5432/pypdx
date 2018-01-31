@@ -70,8 +70,9 @@ dsn = 'testout.sqlite3'
 xmlfile = 'data/pdx.xml'
 mypdx = pypdx.PDX(xmlfile, dsn, debug=True)
 
-mypdx.removeall()
-mypdx.fillparts()
+# should return 'ok', otherwise you get the error message
+status = mypdx.removeall()
+status = mypdx.fillparts()
 
 </pre></blockquote>
 
@@ -140,6 +141,10 @@ PDX files available contain proprietary manufacturing information!).
 Naturally the testing of this program has been very limited. While I believe
 the implementation to be correct (if incomplete), there is always the possibility of bugs. 
 So use at your own risk; you have been warned!
+
+## *Update (2018-01-29)*
+
+For viewing PDX XML files, have a look at my simple web app [pdxdisplay](https://github.com/sid5432/pdxdisplay).
 
 (*Last Revised 2018-01-19*)
 

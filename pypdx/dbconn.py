@@ -127,10 +127,29 @@ class DBconn:
     
     def removeall(self):
         c = self.conn.cursor()
-        c.execute("delete from partsmaster")
-        c.execute("delete from bom")
-        c.execute("delete from attachment")
-        c.execute("delete from approvedmfg")
-        c.close()
-        return
+        err = False
+        try:
+            c.execute("delete from partsmaster")
+            c.execute("delete from bom")
+            c.execute("delete from attachment")
+            c.execute("delete from approvedmfg")
+        except self.db.dbmodule.Error as e:
+            err = True
+            errmsg = e
+        
+        if err:
+            if self.dbtype == 'sqlite3':
+                print("ERROR: ",errmsg)
+                msg = errmsg
+            else:
+                print(errmsg.pgerror)
+                print(errmsg.diag.message_detail)
+                msg = errmsg.pgerror + "; " + errmsg.diag.message_detail
+            
+            c.close()
+            self.conn.rollback()
+            return msg
+                
+        self.conn.commit()
+        return "ok"
     

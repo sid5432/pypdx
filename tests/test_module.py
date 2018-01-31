@@ -17,8 +17,22 @@ def test_module():
     mypdx = pypdx.PDX(xmlfile, dsn, debug=True)
     mypdx.removeall()
     mypdx.fillparts()
-    
+    mypdx.db.commit()
+
     assert(mypdx != None)
+    
+    # should catch dup
+    try:
+        status = mypdx.fillparts()
+        if status == 'ok':
+            print("!!! Database should have caught an error (dup entry)!!!!")
+        else:
+            print("Caught message: ",status)
+            
+        assert( status != 'ok' )
+    except:
+        print("This shouldn't happen!")
+        assert(False)
     
     cur = mypdx.db.conn.cursor()
     cur.execute("select count(*) from bom")
@@ -55,6 +69,10 @@ def test_module():
     cur.close()
     assert(bomcount == 0)
     
+    # test remove
+    status = mypdx.removeall()
+    assert( status == 'ok' )
+
     return
 
 if __name__ == '__main__':
