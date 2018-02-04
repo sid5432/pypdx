@@ -133,6 +133,13 @@ to install the modules.  If you do not care for the PostgreSQL database, you sho
 able to use the program without installing the *psycopg2* module, since it is not imported
 unless you specify the PostgreSQL database option.
 
+## A Simpler Viewer
+
+For a more friendly user interface, and for viewing the contents of the PDX XML files, have a look at my simple web app [pdxdisplay](https://github.com/sid5432/pdxdisplay)
+(written as a [Flask](http://flask.pocoo.org/) application). The *pdxdisplay* program has also been packaged as a [docker container](https://github.com/sid5432/pdx-docker),
+together with a PostgreSQL database.
+
+
 ## Closing Remarks
 
 I have only seen a very small number of PDX files, and there does not seem to be
@@ -142,11 +149,7 @@ Naturally the testing of this program has been very limited. While I believe
 the implementation to be correct (if incomplete), there is always the possibility of bugs. 
 So use at your own risk; you have been warned!
 
-## *Update (2018-01-29)*
-
-For viewing PDX XML files, have a look at my simple web app [pdxdisplay](https://github.com/sid5432/pdxdisplay).
-
-(*Last Revised 2018-01-19*)
+(*Last Revised 2018-02-03*)
 
 
 

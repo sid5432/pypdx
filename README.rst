@@ -6,7 +6,8 @@ pypdx
 Introduction
 ------------
 
-From `the Wikipedia article on PDX <https://en.wikipedia.org/wiki/PDX_(IPC-257X)>`__: “the PDX (Product
+From `the Wikipedia article on
+PDX <https://en.wikipedia.org/wiki/PDX_(IPC-257X)>`__: “the PDX (Product
 Data eXchange) standard for manufacturing is a multi-part standard,
 represented by the IPC 2570 series of specifications.”
 
@@ -24,9 +25,10 @@ which forms the bill-of-materials (BOM), and also information about the
 various files that are inside the PDX/ZIP file.
 
 The DTD of this XML file (identified as “DTD 2571 200111”) can be found
-on the `IPC website <http://www.ipc.org/4.0_Knowledge/4.1_Standards/IPC-25xx-files/2571.zip>`__.
+on the `IPC
+website <http://www.ipc.org/4.0_Knowledge/4.1_Standards/IPC-25xx-files/2571.zip>`__.
 Free PDX viewers are available, one of the most popular being PDXViewer
-from `PDXplorer <http://www.pdxplorer.com/index.html>`__.
+from `PDXplorer <http://www.pdxplorer.com/>`__.
 
 Since the \*.pdx file is simply a ZIP file, it is easy to extract all
 the attachments (documents, schematics, drawings, etc.) from the ZIP
@@ -47,7 +49,7 @@ the **ApprovedManufacturerList**, the **BillOfMaterial**, and the
 **Attachments**. The main purpose of the program is to extract this data
 from the XML file, and organize them by saving them into a relational
 database: in this case either a `SQLite3 <https://www.sqlite.org/>`__
-database or a `PostgreSQL  <https://www.postgresql.org/>`__ database.
+database or a `PostgreSQL <https://www.postgresql.org/>`__ database.
 What you do after the data is stuffed into a relational database is up
 to you!
 
@@ -64,7 +66,7 @@ This should create an executable pypdx. The usage is as follows:
 
 ::
 
-   USAGE: pypdx pdx-file.xml dsn [dump [remove_all_first]]
+    USAGE: pypdx pdx-file.xml dsn [dump [remove_all_first]]
         - pdx-file.xml: this is the PDX XML file
         - dsn: can be a SQLite3 file (the program will create one if it does not exist; use the extension .sqlite3
              : or it can be the dsn connection string for a PostgreSQL database
@@ -98,8 +100,8 @@ To use **pypdx** as a module, do something like this:
    dsn = 'testout.sqlite3'
    xmlfile = 'data/pdx.xml'
    mypdx = pypdx.PDX(xmlfile, dsn, debug=True)
-   
-   # should return 'ok', otherwise you get the error message
+
+   \# should return 'ok', otherwise you get the error message
    status = mypdx.removeall()
    status = mypdx.fillparts()
 
@@ -131,24 +133,23 @@ The data is saved into the following tables:
    approved manufacturers for each Item.
 
 The definition of (and relations between) these tables are laid out in
-the SQL files in the data/ directory. A sample program (*main.py*) in the source 
-code distribution illustrates the usage of the module (this is used to
-form the **pypdx** program mentioned above). You can also dump the contents of
-the PDX file into a JSON file (with the PDX.dump(filename) function).
-However this merely mirrors the structure and contents of the XML file;
-it may not be particularly useful unless you process the JSON
-file/object further on your own.
+the SQL files in the data/ directory. A sample program (main.py) in the
+source code distribution illustrates the usage of the module (this is
+used to form the **pypdx** program mentioned above). You can also dump
+the contents of the PDX file into a JSON file (with the
+PDX.dump(filename) function). However this merely mirrors the structure
+and contents of the XML file; it may not be particularly useful unless
+you process the JSON file/object further on your own.
 
 As mentioned above, the program allows you to extract the data into a
 SQLite3 database or a PostgreSQL database. The former is less trouble to
 set up, as it is file-based. The program will in fact create the SQLite3
 database file for you (as well as create the tables).
 
-For using this in a PostgreSQL database, the program **pypdx** will
-create the tables for you if they do not already exist, but it assumes
-that the database called *pdx* already exists and is running on
-localhost (at port 5432). You can create the database with the
-commands
+For using this in a PostgreSQL database, the program pypdx will create
+the tables for you if they do not already exist, but it assumes that the
+database called pdx already exists and is running on localhost (at port
+5432). You can create the database with the commands:
 
 ::
 
@@ -157,14 +158,13 @@ commands
     template1=# create database pdx;
     template1=# \q
 
-or you can modify the *dsn* specifications in the example program
-to suit your needs. It should be relatively simple to modify the code
-to use a `MySQL database <https://www.mysql.com/>`__, but I have not
-tried this.
+or you can modify the dsn specifications in the example program to suit
+your needs. It should be relatively simple to modify the code to use a
+`MySQL database <https://www.mysql.com/>`__, but I have not tried this.
 
 The program depends on a few Python modules (specified in the
-requirement.txt file), including the SQLite3 driver (*sqlite3*) and
-the PostgreSQL driver (*psycopg2*). Run
+requirement.txt file), including the SQLite3 driver (*sqlite3*) and the
+PostgreSQL driver (*psycopg2*). Run
 
 ::
 
@@ -174,6 +174,17 @@ to install the modules. If you do not care for the PostgreSQL database,
 you should still be able to use the program without installing the
 *psycopg2* module, since it is not imported unless you specify the
 PostgreSQL database option.
+
+A Simpler Viewer
+----------------
+
+For a more friendly user interface, and for viewing the contents of the
+PDX XML files, have a look at my simple web app
+`pdxdisplay <https://github.com/sid5432/pdxdisplay>`__ (written as a
+`Flask <http://flask.pocoo.org/>`__ application). The *pdxdisplay*
+program has also been packaged as a `docker
+container <https://github.com/sid5432/pdx-docker>`__, together with a
+PostgreSQL database.
 
 Closing Remarks
 ---------------
@@ -186,4 +197,4 @@ been very limited. While I believe the implementation to be correct (if
 incomplete), there is always the possibility of bugs. So use at your own
 risk; you have been warned!
 
-(*Last Revised 2018-01-19*)
+(*Last Revised 2018-02-03*)
