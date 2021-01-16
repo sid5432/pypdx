@@ -93,13 +93,13 @@ class DBconn:
     def __del__(self):
         if self.debug:
             print(self.hdr,"closing database connection %s (auto2)" % self.dsn)
-            self.close()
+        self.close()
         return
     
     def __exit__(self,exc_type,exc_value,traceback):
         if self.debug:
             print(self.hdr,"closing database connection %s (auto1)" % self.dsn)
-            self.close()
+        self.close()
         return
     """
     
