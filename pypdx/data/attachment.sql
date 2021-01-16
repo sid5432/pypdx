@@ -16,6 +16,6 @@ create table if not exists attachment (
    references "partsmaster" ("itemuniqueidentifier") 
    on delete cascade on update cascade,
    
-   primary key ("itemuniqueidentifier", "universalresourceidentifier")
+   primary key ("itemuniqueidentifier", "universalresourceidentifier", "fileidentifier")
    );
    
